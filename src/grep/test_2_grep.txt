@@ -1,0 +1,25 @@
+void flagF() {
+  FILE *file = NULL;
+  char buffer[BUFFERSIZE] = {0};
+  if ((file = fopen(optarg, "r"))) {
+    while (fgets(buffer, BUFFERSIZE, file) != NULL) {
+      if (buffer[strlen(buffer) - 1] == '\n') {  // количество символов в buffer
+        buffer[strlen(buffer) - 1] = 0;
+      }
+      if (lines.eCount > 0) {
+        strcat(pattern, "|");
+      }
+      if (*buffer == '\0') {
+        lines.emptyLines = 1;
+        strcat(pattern, ".");
+      } else {
+        strcat(pattern, buffer);
+      }
+      ++lines.eCount;
+    }
+    fclose(file);
+  } else {
+    printf("File not found\n");
+    exit(1);
+  }
+}
